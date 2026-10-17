@@ -1,0 +1,24 @@
+name: paint-contribution-art
+# One-time job: paints the HK pixel art on the contribution graph.
+# Triggers once when this file is pushed, then it should be deleted.
+on:
+  push:
+    paths:
+      - '.github/workflows/paint-contribution-art.yml'
+permissions:
+  contents: write
+jobs:
+  paint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Paint HK pixel art with backdated commits
+        env:
+          PIXEL_AUTO: "y"
+        run: |
+          git config user.name "HayyanKhan062"
+          git config user.email "266313448+HayyanKhan062@users.noreply.github.com"
+          python3 paint_hk.py
+          git push origin main
